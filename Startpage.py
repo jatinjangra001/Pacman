@@ -7,7 +7,7 @@ pygame.init()
 window_width = 900
 window_height = 950
 
-back_music = pygame.mixer.Sound('resources/sounds/pacman_beginning.wav')
+back_music = pygame.mixer.Sound('C://Users//jatin//OneDrive//Desktop//Pacman//Pacman//resources//sounds//pacman_beginning.wav')
 back_music.set_volume(0.5)
 
 # Set colors
@@ -15,7 +15,7 @@ black = (0, 0, 0)
 yellow = (255, 255, 0)
 
 # Load the background image
-background_image = pygame.image.load('resources/images/newbck.png')
+background_image = pygame.image.load('C://Users//jatin//OneDrive//Desktop//Pacman//Pacman//resources//images//newbck.png')
 
 # Create the game window
 window = pygame.display.set_mode((window_width, window_height))
