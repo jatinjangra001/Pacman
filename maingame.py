@@ -18,7 +18,7 @@ font = pygame.font.Font('freesansbold.ttf', 20)
 level = copy.deepcopy(boards[boards1][boards2])
 color = 'blue'
 PI = math.pi
-player_images = []
+player_images = []  
 for i in range(1, 5):
         player_images.append(pygame.transform.scale(pygame.image.load(f'resources/images/player/{i}.png'), (45,45)))
     
@@ -29,6 +29,11 @@ pinky_img = pygame.transform.scale(pygame.image.load(f'resources/images/ghosts/p
 clyde_img = pygame.transform.scale(pygame.image.load(f'resources/images/ghosts/orange.png'), (45,45))
 spooked_img = pygame.transform.scale(pygame.image.load(f'resources/images/ghosts/powerup.png'), (45,45))
 dead_img = pygame.transform.scale(pygame.image.load(f'resources/images/ghosts/dead.png'), (45,45))
+eat_sound = pygame.mixer.Sound("resources\sounds\pacman_death.wav")
+eat_sound.set_volume(0.1)
+eat_fruit = pygame.mixer.Sound("resources\sounds\pacman_eatfruit.wav")
+eat_fruit.set_volume(0.1)
+
 
 player_x = 450
 player_y = 663
@@ -42,7 +47,7 @@ inky_direction = 2
 pinky_x = 440
 pinky_y = 438
 pinky_direction = 2
-clyde_x = 440
+clyde_x = 420
 clyde_y = 438
 clyde_direction = 2
 counter = 0
@@ -67,7 +72,7 @@ pinky_box = False
 moving = False
 ghost_speeds = [2, 2, 2, 2]
 startup_counter = 0
-lives = 10
+lives = 6
 game_over = False
 game_won = False
 
@@ -669,6 +674,7 @@ def draw_misc():
     score_text = font.render(f'Score: {score}', True, 'white')
     screen.blit(score_text, (10, 920))
     if powerup:
+        eat_fruit.play()
         pygame.draw.circle(screen, 'blue', (140, 930), 15)
     for i in range(lives):
         screen.blit(pygame.transform.scale(player_images[0], (30, 30)), (650 + i * 40, 915))
@@ -870,14 +876,14 @@ def get_targets(blink_x, blink_y, ink_x, ink_y, pink_x, pink_y, clyd_x, clyd_y):
         else:
             ink_target = return_target
         if not pinky.dead:
-            if 340 < pink_x < 560 and 340 < pink_y < 500:
+            if 340 < pink_x < 560 and 340 < pink_y < 500 and score >300:
                 pink_target = (400, 100)
             else:
                 pink_target = (player_x, player_y)
         else:
             pink_target = return_target
         if not clyde.dead:
-            if 340 < clyd_x < 560 and 340 < clyd_y < 500:
+            if 340 < clyd_x < 560 and 340 < clyd_y < 500 and score > 700:
                 clyd_target = (400, 100)
             else:
                 clyd_target = (player_x, player_y)
@@ -976,6 +982,7 @@ while run:
                 (player_circle.colliderect(clyde.rect) and not clyde.dead):
             if lives > 0:
                 lives -= 1
+                eat_sound.play()
                 startup_counter = 0
                 powerup = False
                 power_counter = 0
@@ -992,7 +999,7 @@ while run:
                 pinky_x = 440
                 pinky_y = 438
                 pinky_direction = 2
-                clyde_x = 440
+                clyde_x = 420
                 clyde_y = 438
                 clyde_direction = 2
                 eaten_ghost = [False, False, False, False]
@@ -1023,7 +1030,7 @@ while run:
             pinky_x = 440
             pinky_y = 438
             pinky_direction = 2
-            clyde_x = 440
+            clyde_x = 420
             clyde_y = 438
             clyde_direction = 2
             eaten_ghost = [False, False, False, False]
@@ -1054,7 +1061,7 @@ while run:
             pinky_x = 440
             pinky_y = 438
             pinky_direction = 2
-            clyde_x = 440
+            clyde_x = 420
             clyde_y = 438
             clyde_direction = 2
             eaten_ghost = [False, False, False, False]
@@ -1085,7 +1092,7 @@ while run:
             pinky_x = 440
             pinky_y = 438
             pinky_direction = 2
-            clyde_x = 440
+            clyde_x = 420
             clyde_y = 438
             clyde_direction = 2
             eaten_ghost = [False, False, False, False]
@@ -1116,7 +1123,7 @@ while run:
             pinky_x = 440
             pinky_y = 438
             pinky_direction = 2
-            clyde_x = 440
+            clyde_x = 420
             clyde_y = 438
             clyde_direction = 2
             eaten_ghost = [False, False, False, False]
@@ -1175,7 +1182,7 @@ while run:
                 pinky_x = 440
                 pinky_y = 438
                 pinky_direction = 2
-                clyde_x = 440
+                clyde_x = 420
                 clyde_y = 438
                 clyde_direction = 2
                 eaten_ghost = [False, False, False, False]
@@ -1184,7 +1191,7 @@ while run:
                 clyde_dead = False
                 pinky_dead = False
                 score = 0
-                lives = 10
+                lives = 6
                 boards2 += 1
                 if boards2 >= len(boards[boards1]):
                     boards2 = 0
